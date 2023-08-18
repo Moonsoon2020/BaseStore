@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Редактирование профиля</h1>
+<div class="col-6">
+    <form method="post" action="{{ url_for('edit_product', id=product.id) }}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Название</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="details" class="form-label">Подробности</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required>{{ product.description }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="weight" class="form-label">Количество</label>
+            <input type="text" class="form-control" id="count" name="count" value="{{ product.count }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="age" class="form-label">Цена поставщика</label>
+            <input type="text" class="form-control" id="price" name="price" value="{{ product.price }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+    <a href="/" class="btn btn-secondary mt-3">На главную</a>
+
+</div>
+{% endblock %}

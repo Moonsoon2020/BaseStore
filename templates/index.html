@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Список товаров{% endblock %}
+
+{% block content %}
+<h1 class="my-3">Товары на складе</h1>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Артикул</th>
+            <th scope="col">Название</th>
+            <th scope="col">Дополнительно</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Цена поставщика</th>
+            <th scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in groceries %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>
+                <form method="post" action="{{ url_for('edit_count_minus', id=product.id) }}" style="width:17%;height:90%px; background-color: red display:inline">
+                    <button type="submit" class="btn btn-sm" style="width:100%;height:100%px; background-color: red;color:white">-</button>
+                </form>
+                {{ product.count }}
+                <form method="post" action="{{ url_for('edit_count_add', id=product.id) }}" style="width:17%;height:90%px; background-color: green display:inline">
+                    <button type="submit" class="btn btn-sm" style="width:100%;height:100%px; background-color: green;color:white">+</button>
+                </form>
+            </td>
+            <td>{{ product.price }}</td>
+            <td>
+                <a href="{{ url_for('edit_product', id=product.id) }}"
+                   class="btn btn-sm btn-primary mx-1">Редактировать</a>
+                <form method="post" action="{{ url_for('delete_product', id=product.id) }}" style="display: inline">
+                    <button type="submit" class="btn btn-sm btn-danger mx-1">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
