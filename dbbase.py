@@ -1,8 +1,10 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Boolean
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flask_login import UserMixin
+
 
 Base = declarative_base()
 
@@ -60,6 +62,21 @@ class ControlBD:
         self.session.commit()
         self.session.close()
 
+    def load_user(self, user_id):
+        return self.session.query(User).get(int(user_id))
+
+    def user_get_p(self, username):
+        return self.session.query(User).filter_by(username=username).first()
+
+    def add_user(self, username, password):
+        new_user = User(username=username, password=password, ok=False)
+        self.session.add(new_user)
+        self.session.commit()
+
+    def get_user(self):
+        return self.session.query(User).all()
+
+
 class Praise(Base):
     __tablename__ = 'skl'
 
@@ -73,6 +90,17 @@ class Praise(Base):
     def __repr__(self):
         return f'<Student name="{self.name}" count={self.count}>'
 
+class User(UserMixin, Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer(), primary_key=True)
+    username = Column(String(50), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    ok = Column(Boolean(), nullable=False)
+
+    def __repr__(self):
+        return f'<User {self.username}>'
+
+
 if __name__ == '__main__':
     contr = ControlBD()
-    print(contr.find(9))
