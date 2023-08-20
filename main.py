@@ -9,12 +9,24 @@ app.config['SECRET_KEY'] = 'secret-key-goes-here'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+def log_question():
+    if current_user.is_authenticated:
+        user = contr.user_get_p(current_user.username)
+        if user and user.ok:
+            print(3)
+            return True
+        print(1, user, user.ok)
+        return False
+    else:
+        print(2)
+        return False
 @login_manager.user_loader
 def load_user(user_id):
     return contr.load_user(user_id)
 @app.route('/', methods=['GET'])
 def index():
-    if current_user.is_authenticated:
+    if log_question():
         groceries = contr.get()
         return render_template('index.html', groceries=groceries, info='')
     else:
@@ -22,7 +34,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
+    if log_question():
         return redirect(url_for('index'))
     if request.method == 'POST':
         username = request.form['username']
@@ -30,6 +42,8 @@ def login():
         user = contr.user_get_p(username)
         if user and check_password_hash(user.password, password) and user.ok:
             login_user(user)
+            current_user.username = username
+            current_user.password = password
             return redirect(url_for('index'))
         else:
             flash('Invalid username or password')
@@ -52,20 +66,15 @@ def register():
             return redirect(url_for('login'))
     return render_template('register.html')
 
-# @app.route('/profile')
-# def profile():
-#     if current_user.is_authenticated:
-#         return render_template('profile.html', user=current_user)
-#     else:
-#         return redirect(url_for('login'))
-
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/add', methods=['GET', 'POST'])
-def add():
+@app.route('/add_product', methods=['GET', 'POST'])
+def add_product():
+    if not log_question():
+        return render_template('log.html')
     if request.method == 'POST':
         name = request.form['name']
         desc = request.form['description']
@@ -73,10 +82,12 @@ def add():
         price = request.form['price']
         contr.add_product(name, int(price), description=desc, count=int(weight))
         return redirect('/')
-    return render_template('add.html')
+    return render_template('add_product.html')
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
+    if not log_question():
+        return render_template('log.html')
     if request.method == 'POST':
         name = request.form['name']
         desc = request.form['description']
@@ -86,8 +97,10 @@ def settings():
         return redirect('/')
     return render_template('settings.html')
 
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@app.route('/edit_product/<int:id>', methods=['GET', 'POST'])
 def edit_product(id):
+    if not log_question():
+        return render_template('log.html')
     patient = contr.find_product(id=id)
     if request.method == 'POST':
         patient.name = request.form['name']
@@ -95,17 +108,21 @@ def edit_product(id):
         patient.count = int(eval(request.form['count']))
         patient.price = int(request.form['price'])
         return redirect('/')
-    return render_template('edit.html', product=patient)
+    return render_template('edit_product.html', product=patient)
 
 
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete_product(id):
+    if not log_question():
+        return render_template('log.html')
     contr.del_product(id=id)
     return redirect('/')
 
 
 @app.route('/edit_count/<int:id>&<int:dop>', methods=['GET', 'POST'])
 def edit_count(id, dop):
+    if not log_question():
+        return render_template('log.html')
     product = contr.find_product(id=id)
     product.count += dop - 1
     contr.commit()
@@ -114,6 +131,8 @@ def edit_count(id, dop):
 
 @app.route('/find/', methods=['GET', 'POST'])
 def find():
+    if not log_question():
+        return render_template('log.html')
     groceries = contr.get()
     yes = []
     fi = request.form['i_find']
