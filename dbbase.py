@@ -17,38 +17,32 @@ class ControlBD:
         self.session = self.Session(bind=self.engine)
         Base.metadata.create_all(self.engine)
 
-    def add_position(self, name, price, description='', count=0):
-        self.session.add(Praise(name=name, count=count, price=price, description=description))
+    def add_product(self, name, price, description='', count=0):
+        self.session.add(Product(name=name, count=count, price=price, description=description))
         self.session.commit()
 
     def commit(self):
         self.session.commit()
 
-    def find(self, name=None, id=None):
+    def find_product(self, name=None, id=None):
         if not (name or id):
             raise Exception('Не указано имя или id')
         if name:
-            tolk = (self.session.query(Praise).filter(
-                Praise.name == name
+            tolk = (self.session.query(Product).filter(
+                Product.name == name
             ).first())
         else:
-            tolk = (self.session.query(Praise).filter(
-                Praise.id == id
+            tolk = (self.session.query(Product).filter(
+                Product.id == id
             ).first())
         return tolk
 
-    def del_position(self, name=None, id=None):
-        self.session.delete(self.find(name=name, id=id))
-        self.session.commit()
-
-    def remove_position(self, new_name, new_count, name=None, id=None):
-        tolk = self.find(name=name, id=id)
-        tolk.name = new_name
-        tolk.count = new_count if new_count != -1 else tolk.count
+    def del_product(self, name=None, id=None):
+        self.session.delete(self.find_product(name=name, id=id))
         self.session.commit()
 
     def remove_count(self, count, name=None, id=None):
-        tolk = self.find(name=name, id=id)
+        tolk = self.find_product(name=name, id=id)
         if isinstance(count, int):
             tolk.count = count
         else:
@@ -56,7 +50,34 @@ class ControlBD:
         self.session.commit()
 
     def get(self):
-        return self.session.query(Praise).all()
+        return self.session.query(Product).all()
+
+    def add_position(self, name, price, recept, description=''):
+        self.session.add(Prise(name=name, description=description, price=price, recept=recept))
+        self.session.commit()
+
+    def del_position(self, name=None, id=None):
+        self.session.delete(self.find_position(name=name, id=id))
+        self.session.commit()
+
+    def remove_position(self, new_name, new_count, name=None, id=None):
+        tolk = self.find_position(name=name, id=id)
+        tolk.name = new_name
+        tolk.count = new_count if new_count != -1 else tolk.count
+        self.session.commit()
+
+    def find_position(self, name=None, id=None):
+        if not (name or id):
+            raise Exception('Не указано имя или id')
+        if name:
+            tolk = (self.session.query(Prise).filter(
+                Prise.name == name
+            ).first())
+        else:
+            tolk = (self.session.query(Prise).filter(
+                Prise.id == id
+            ).first())
+        return tolk
 
     def close(self):
         self.session.commit()
@@ -77,8 +98,8 @@ class ControlBD:
         return self.session.query(User).all()
 
 
-class Praise(Base):
-    __tablename__ = 'skl'
+class Product(Base):
+    __tablename__ = 'product'
 
     id = Column(Integer(), autoincrement="auto", primary_key=True)
     name = Column(String(50), nullable=False, unique=True)
@@ -93,13 +114,25 @@ class Praise(Base):
 class User(UserMixin, Base):
     __tablename__ = 'user'
 
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True, autoincrement="auto")
     username = Column(String(50), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
     ok = Column(Boolean(), nullable=False)
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+class Prise(Base):
+    __tablename__ = 'prise'
+
+    id = Column(Integer(), primary_key=True, autoincrement="auto")
+    name = Column(String(50), unique=True, nullable=False)
+    description = Column(String(50))
+    price = Column(Integer(), nullable=False)
+    recept = Column(String(500), nullable=False)
+
+    def __repr__(self):
+        return f'<User {self.name}>'
 
 
 if __name__ == '__main__':

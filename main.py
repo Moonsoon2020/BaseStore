@@ -38,7 +38,7 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return render_template('log.html')
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -71,7 +71,7 @@ def add():
         desc = request.form['description']
         weight = request.form['quantity']
         price = request.form['price']
-        contr.add_position(name, int(price), description=desc, count=int(weight))
+        contr.add_product(name, int(price), description=desc, count=int(weight))
         return redirect('/')
     return render_template('add.html')
 
@@ -82,13 +82,13 @@ def settings():
         desc = request.form['description']
         weight = request.form['quantity']
         price = request.form['price']
-        contr.add_position(name, int(price), description=desc, count=int(weight))
+        contr.add_product(name, int(price), description=desc, count=int(weight))
         return redirect('/')
     return render_template('settings.html')
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_product(id):
-    patient = contr.find(id=id)
+    patient = contr.find_product(id=id)
     if request.method == 'POST':
         patient.name = request.form['name']
         patient.description = request.form['description']
@@ -100,13 +100,13 @@ def edit_product(id):
 
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete_product(id):
-    contr.del_position(id=id)
+    contr.del_product(id=id)
     return redirect('/')
 
 
 @app.route('/edit_count/<int:id>&<int:dop>', methods=['GET', 'POST'])
 def edit_count(id, dop):
-    product = contr.find(id=id)
+    product = contr.find_product(id=id)
     product.count += dop - 1
     contr.commit()
     return redirect('/')
@@ -135,6 +135,7 @@ def find():
             yes.append(i)
             info = 'Поиск по цене со значением ' + fi
     return render_template('index.html', groceries=yes, info=info)
+
 
 
 if __name__ == '__main__':
