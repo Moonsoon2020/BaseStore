@@ -49,8 +49,11 @@ class ControlBD:
             tolk.count += 1 if count == '+' else -1
         self.session.commit()
 
-    def get(self):
+    def get_product(self):
         return self.session.query(Product).all()
+
+    def get_prise(self):
+        return self.session.query(Prise).all()
 
     def add_position(self, name, price, recept, description=''):
         self.session.add(Prise(name=name, description=description, price=price, recept=recept))
@@ -132,7 +135,7 @@ class Prise(Base):
     recept = Column(String(500), nullable=False)
 
     def __repr__(self):
-        return f'<User {self.name}>'
+        return f'<имя {self.name} >'
 
 
 if __name__ == '__main__':

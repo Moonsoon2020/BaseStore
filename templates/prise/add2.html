@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Добавление товара{% endblock %}
+
+{% block content %}
+<h1>Добавление товара</h1>
+<div class="col-8">
+        <form method="POST" action="/add_prise">
+        <div class="form-group">
+            <select id="k_find" name="k_find">
+                <option value="">-- Выберите --</option>
+                {% for product in groceries %}
+                <option value={{product.id}}_{{product.name}}>{{product.name}}</option>
+                {% endfor %}
+            </select>
+            <input type="number" name="number" id="number">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-red mt-3">Добавить элемент рецепта</button>
+        </div>
+        {% for product in rec%}
+        <br>
+        <label>{{product}}</label>
+        {%endfor%}
+        <div class="form-group">
+            <a>Всё правильно, ввод закончен.</a>
+            <input type="checkbox" name="box" id="box">
+            <button type="submit" class="btn btn-primary mt-3">Добавить</button>
+        </div>
+    </form>
+</div>
+<a href="/" class="btn btn-secondary mt-3">На главную</a>
+{% endblock %}

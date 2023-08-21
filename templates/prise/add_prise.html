@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Добавление товара{% endblock %}
+
+{% block content %}
+<h1>Добавление товара</h1>
+<div class="col-8">
+    <form method="POST" action="/add_prise">
+        <div class="form-group">
+            <label>Наименование:</label>
+            <input type="text" class="form-control" name="name" id="name">
+        </div>
+        <div class="form-group">
+            <label>Описание:</label>
+            <input type="text" class="form-control" name="des" id="des">
+        </div>
+        <div class="form-group">
+            <label>Цена:</label>
+            <input type="number" class="form-control" name="prise" id="prise">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Продолжить</button>
+
+    </form>
+</div>
+<a href="/" class="btn btn-secondary mt-3">На главную</a>
+{% endblock %}
