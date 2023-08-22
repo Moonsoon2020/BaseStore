@@ -37,6 +37,19 @@ class ControlBD:
             ).first())
         return tolk
 
+    def find_prise(self, name=None, id=None):
+        if not (name or id):
+            raise Exception('Не указано имя или id')
+        if name:
+            tolk = (self.session.query(Prise).filter(
+                Prise.name == name
+            ).first())
+        else:
+            tolk = (self.session.query(Prise).filter(
+                Prise.id == id
+            ).first())
+        return tolk
+
     def del_product(self, name=None, id=None):
         self.session.delete(self.find_product(name=name, id=id))
         self.session.commit()
@@ -61,6 +74,10 @@ class ControlBD:
 
     def del_position(self, name=None, id=None):
         self.session.delete(self.find_position(name=name, id=id))
+        self.session.commit()
+
+    def del_prise(self, name=None, id=None):
+        self.session.delete(self.find_prise(name=name, id=id))
         self.session.commit()
 
     def remove_position(self, new_name, new_count, name=None, id=None):
