@@ -1,5 +1,5 @@
 from main import *
-@app.route('/add_product', methods=['GET', 'POST'])
+@app.route('/product/add', methods=['GET', 'POST'])
 def add_product():
     if not log_question():
         return render_template('regandlog/log.html')
@@ -12,7 +12,7 @@ def add_product():
         return redirect('/')
     return render_template('product/add_product.html', choise='product')
 
-@app.route('/edit_product/<int:id>', methods=['GET', 'POST'])
+@app.route('/product/edit/<int:id>', methods=['GET', 'POST'])
 def edit_product(id):
     if not log_question():
         return render_template('regandlog/log.html')
@@ -27,7 +27,7 @@ def edit_product(id):
     return render_template('product/edit_product.html', product=patient, choise='product')
 
 
-@app.route('/delete/<int:id>', methods=['POST'])
+@app.route('/product/delete/<int:id>', methods=['POST'])
 def delete_product(id):
     if not log_question():
         return render_template('regandlog/log.html')
@@ -35,7 +35,7 @@ def delete_product(id):
     return redirect('/')
 
 
-@app.route('/edit_count/<int:id>&<int:dop>', methods=['GET', 'POST'])
+@app.route('/product/edit_count/<int:id>&<int:dop>', methods=['GET', 'POST'])
 def edit_count(id, dop):
     if not log_question():
         return render_template('regandlog/log.html')

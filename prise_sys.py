@@ -22,7 +22,7 @@ def prise_find():
             info = 'Поиск по цене со значением ' + fi
     return render_template('prise/prise.html', groceries=yes, info=info, choise='prise')
 
-@app.route('/edit_prise/<int:id>', methods=['GET', 'POST'])
+@app.route('/prise/edit/<int:id>', methods=['GET', 'POST'])
 def edit_prise(id):
     if not log_question():
         return render_template('regandlog/log.html')
@@ -36,7 +36,7 @@ def edit_prise(id):
     return render_template('prise/edit_prise.html', product=patient, choise='prise')
 
 
-@app.route('/delete_prise/<int:id>', methods=['POST'])
+@app.route('/prise/delete/<int:id>', methods=['POST'])
 def delete_prise(id):
     if not log_question():
         return render_template('regandlog/log.html')
@@ -53,7 +53,7 @@ def ind_prise():
         return render_template('regandlog/log.html')
 
 
-@app.route('/add_prise', methods=['GET', 'POST'])
+@app.route('/prise/add', methods=['GET', 'POST'])
 def add_prise():
     if not log_question():
         return render_template('log.html')
