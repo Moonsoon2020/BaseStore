@@ -33,7 +33,7 @@ def index():
     if log_question():
         return render_template('order_table.html', choise='table', prise=contr.get_prise())
     else:
-        return (render_template('regandlog/log.html'))
+        return render_template('regandlog/log.html')
 
 
 
