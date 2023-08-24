@@ -12,13 +12,14 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = contr.user_get_p(username)
+        print(user, check_password_hash(user.password, password), user.ok)
         if user and check_password_hash(user.password, password) and user.ok:
             login_user(user)
             current_user.username = username
             current_user.password = password
             return redirect(url_for('index'))
         else:
-            flash('Invalid username or password')
+            flash('Ошибка ввода или подтверждения, проверьте ввод и обратитесь к старшему сотруднику.')
     return render_template('regandlog/login.html')
 
 

@@ -14,27 +14,45 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
 </head>
 <body>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- навигация -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        {% if choise=="product"%}
-        <a class="navbar-brand" href="/" style="background:#7FFFD4; border-radius:5px">Товары на складе</a>
+        {% if choise=="table"%}
+        <a class="navbar-brand" href="/" style="background:#0077ff; border-radius:5px">Стол заказов</a>
         {% else %}
-        <a class="navbar-brand" href="/">Товары на складе</a>
+        <a class="navbar-brand" href="/">Стол заказов</a>
+        {% endif %}
+        {% if choise=="queue"%}
+        <a class="navbar-brand" href="/" style="background:#0077ff; border-radius:5px">Очередь</a>
+        {% else %}
+        <a class="navbar-brand" href="/">Очередь</a>
+        {% endif %}
+        {% if choise=="product"%}
+        <a class="navbar-brand" href="/product" style="background:#0077ff; border-radius:5px">Товары на складе</a>
+        {% else %}
+        <a class="navbar-brand" href="/product">Товары на складе</a>
         {% endif %}
         {% if choise=="prise"%}
-        <a class="navbar-brand" href="/prise/" style="background:#7FFFD4; border-radius:5px">Рецепты</a>
+        <a class="navbar-brand" href="/prise/" style="background:#0077ff; border-radius:5px">Рецепты</a>
         {%else%}
         <a class="navbar-brand" href="/prise/">Рецепты</a>
         {% endif %}
         {% if choise=="settings"%}
-        <a class="navbar-brand" href="/settings" style="background:#7FFFD4; border-radius:5px">Настройки</a>
+        <a class="navbar-brand" href="/settings" style="background:#0077ff; border-radius:5px">Настройки</a>
         {%else%}
         <a class="navbar-brand" href="/settings">Настройки</a>
         {% endif %}
-
-
+        {% if choise=="history"%}
+        <a class="navbar-brand" href="#" style="background:#0077ff; border-radius:5px">История</a>
+        {%else%}
+        <a class="navbar-brand" href="#">История</a>
+        {% endif %}
+        {% if choise=="analitic"%}
+        <a class="navbar-brand" href="#" style="background:#0077ff; border-radius:5px">Аналитика</a>
+        {%else%}
+        <a class="navbar-brand" href="#">Аналитика</a>
+        {% endif %}
         <div class="collapse navbar-collapse justify-content-end"
              id="navbarNav">
             <ul class="navbar-nav">

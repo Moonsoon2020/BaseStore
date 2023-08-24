@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Стол Заказов{% endblock %}
+
+{% block content %}
+<style>
+    .left {
+      float: left;
+      width: 20%;
+    }
+    .right {
+      float: right;
+      width: 80%;
+    }
+</style>
+<body>
+<div class="left">
+    <h4 class="card-title">Заказ</h4>
+</div>
+<div class="right">
+    <div class="row">
+        {% for product in prise %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card">
+                <div style="position: relative;">
+                    <div class="card-body" style="min-height: 230px;">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ product.price }}</h6>
+                        <div class="card-text">{{ product.description[:50] }}...</div>
+                        <a href="{{ url_for('index', id=product.id) }}" class="btn btn-primary"
+                           style="position: absolute; bottom: 15px; right: 15px;background=#0077ff">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+{% endblock %}
