@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from dbbase import ControlBD
 import logging
 
-logging.basicConfig(level=logging.DEBUG, filename="log.log",filemode="a")
+logging.basicConfig(level=logging.DEBUG, filename="log.log", filemode="a")
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///base.db'
 app.config['SECRET_KEY'] = 'secret-key-goes-here'
@@ -28,13 +28,21 @@ def log_question():
         print(2)
         return False
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if log_question():
-        return render_template('order_table.html', choise='table', prise=contr.get_prise())
-    else:
+
+@app.route('/<id>', methods=['GET'])
+def index(id):
+    if not log_question():
         return render_template('regandlog/log.html')
 
+    if id == 'start':
+        app.bibl['table' + str(current_user.username)] = []
+    elif id == -2:
+        pass
+    else:
+        app.bibl['table' + str(current_user.username)].append([id, 1])
+
+        return render_template('order_table.html', choise='table', prise=contr.get_prise(),
+                               zak=app.bibl['table' + str(current_user.username)])
 
 
 @app.route('/settings', methods=['GET', 'POST'])
@@ -44,4 +52,3 @@ def settings():
     if request.method == 'POST':
         return redirect('/')
     return render_template('settings.html', choise='settings')
-
